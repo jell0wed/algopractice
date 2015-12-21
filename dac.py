@@ -91,6 +91,40 @@ print fixed_point(nums, 0, len(nums) - 1)
 #
 
 
+# Find the number of zeroes
+# Given an array of 1s and 0s which has all 1s first followed by all 0s. Find the number of 0s.
+# Count the number of zeroes in the given array.
+#
+# We know for fact that a bunch of 1s must be followed by a bunch of 0s.
+# Hence know at any given index on which side the 1s or 0s are depending on the value at that given
+# index. We can recursively resolve that problem in O(logn) time again.
+#
+# Take any middle element n,
+# - if it is equal to 1, then we know that the bunch of zeros we wish to count is on the right side.
+# - if it is equal to 0:
+#   - and its prior element (n-1) is 0, we are in the middle of a bunch of zeros. In order to calculate to total number
+#     of zeros, we must find the last 1. As n-1 is zero, we know that the last 1 is in the left subarray.
+#   - and its prior element (n-1) is 1, we are at the first 0 of the whole 0s sequence. Simply return the number of 0s.
+#
 
+def num_zeros(nums, i, j):
+    if i > j:
+        return 0
 
+    mid = int(math.floor((j - i) / 2)) + i
+    if nums[mid] == 1: # bunch of zeros must be on the right side
+        return num_zeros(nums, mid + 1, j)
+    else:
+        if nums[mid - 1] == 0: # last 1s is on the left side
+            return num_zeros(nums, i, mid - 1)
+        else:
+            return ((len(nums) - 1) - mid) + 1
 
+nums = [1, 0, 0, 0, 0, 0]
+print num_zeros(nums, 0, len(nums) - 1)
+
+# Analysis
+# T(1) < \Theta(1)
+# T(n) < T(n/2) + O(1)
+# O(logn)
+#
