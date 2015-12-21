@@ -54,3 +54,43 @@ print unique_duplicate([1,1,2,3,3,4,4,5,5,6,6])
 # hence T(N) is O(n^{log_2 1}*log^{k+1} n) is O(log n)
 #
 
+
+
+# Find a Fixed Point in a given array
+# Given an array of n distinct integers sorted in ascending order, write a function that returns a
+# Fixed Point in the array, if there is any Fixed Point present in array, else returns -1.
+# Fixed Point in an array is an index i such that arr[i] is equal to i.
+#
+# Note that integers in array can be negative.
+#
+# We can solve this problem using the divide and conquer paradigm.
+# First, look at the middle element.
+#  - If it is a fixed point (==), simply return it
+#  - If the value is less than the current index, a fixed point must lie (or not) on the left-hand side.
+#  - If the value is greater than the current index, a fixed point must lie (or not) on the right-hand side.
+
+def fixed_point(nums, i, j):
+    if i > j:
+        return -1
+
+    mid = int(math.floor((j - i) / 2)) + i
+    if nums[mid] == mid:
+        return nums[mid]
+    elif nums[mid] < mid:
+        return fixed_point(nums, mid+1, j)
+    else:
+        return fixed_point(nums, 0, mid-1)
+
+nums = [5,10,100,200,300,400]
+print fixed_point(nums, 0, len(nums) - 1)
+
+# Again, the recurrence of this algorithm can be described as follows :
+# T(1) < \theta(1)
+# T(n) < T(n/2) + O(1)
+# as before, this algorithm is (log n)
+#
+
+
+
+
+
