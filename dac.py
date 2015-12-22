@@ -128,3 +128,57 @@ print num_zeros(nums, 0, len(nums) - 1)
 # T(n) < T(n/2) + O(1)
 # O(logn)
 #
+
+# McGill COMP 251 Final 2014 - Majority Element
+# You are given an array A[1..n] of integers. You would like to determine whether A
+# contains a majority element, that is, an element that appears more than n/2 times in A.
+#
+# Use this fact and the algorithm in b) to design a divide-and-conquer algorithm for solving this
+# problem.
+#
+
+# We notice that an element is a majority iff it is either a majority in the A[0..floor(n/2)] subarray or the
+# A[floor(n/2)+1..n] subarray. When comparing 2 distinct element (ie. len(A) == 2) we simply
+# have to decided whether the two elements form a majority or not --ie. are they the same or not?
+# The base case is trivial, n = 1 should simply return the first number as a majority
+#
+# Consider the following example :
+#
+# Nice example :
+# 0 1 1 1 1 1 1 1
+# 0 1 1 1 |      1 1 1 1
+# 0 1 || 11 |    1 1 || 1 1
+# (X)    (1)     (1)    (1)
+#    (1)             (1)
+# yields that 1 is a majority
+#
+
+def majority(nums):
+    if len(nums) == 0:
+        return None
+
+    if len(nums) == 1:
+        return nums[0]
+    else:
+        mid = int(math.floor((len(nums) - 1) / 2))
+        left = majority(nums[0:mid])
+        right = majority(nums[(mid+1):(len(nums) - 1)])
+        print (left, right)
+        if (left,right) == (None, None):
+            return None
+        elif left == None:
+            return right
+        elif right == None:
+            return left
+        else:
+            if left != right:
+                return None
+            else:
+                return left
+# TODO : make this working
+print majority([1,0,1,0,1,0,1,0,0])
+
+
+
+
+
