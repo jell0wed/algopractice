@@ -72,7 +72,7 @@ print "finished"
 # coin to his previous wins. Determine the maximum possible amount of money we can
 # definitely win if we move first.
 #
-# c) Find a recursive formula for V(i,j) from (four) other values of V(i',j') (j'–i' is odd).
+# c) Find a recrusive formula V(i,j) from (four) other values of V(i', j') (j'-i' is odd)
 # Hint: When v(i),...,v(j) remain, only v(i) or v(j) can be selected. Notice also that we are
 # trying to maximize our win whereas the opponent is trying to minimize our win.
 #
@@ -101,8 +101,34 @@ print "finished"
 # V(i, j) = max( v(i) + min ( V(i+2, j), V(i+1, j-1) ) ,
 #                v(j) + min ( V(i+1, j-1), V(i, j-2) ) )
 
+coins = [1, 2, 3, 4, 5, 6]
+def coins_game_rec(coins, i, j):
+    if len(coins) == 0:
+        return 0
 
+    if j == (i + 1):
+        return max(coins[i], coins[j])
 
+    pick_i = coins[i] + min(coins_game_rec(coins, i+2, j), coins_game_rec(coins, i+1, j-1))
+    pick_j = coins[j] + min(coins_game_rec(coins, i+1, j-1), coins_game_rec(coins, i, j-2))
+    return max(pick_i, pick_j)
+
+print coins_game_rec(coins, 0, len(coins) - 1)
+
+memo = [[-1 for x in range(0, len(coins))] for i in range(0, len(coins))]
+def coins_game_rec_memo(coins, i, j):
+    if memo[i][j] > -1:
+        return memo[i][j]
+
+    if j == (i+1):
+        memo[i][j] = max(coins[i], coins[j])
+    else:
+        pick_i = coins[i] + min(coins_game_rec_memo(coins, i+2, j), coins_game_rec_memo(coins, i+1, j-1))
+        pick_j = coins[j] + min(coins_game_rec_memo(coins, i+1, j-1), coins_game_rec_memo(coins, i, j-2))
+        memo[i][j] = max(pick_i, pick_j)
+    return memo[i][j]
+
+print coins_game_rec_memo(coins, 0, len(coins) - 1)
 
 
 
