@@ -65,6 +65,41 @@ def knapsack_memo(items, i, X):
 print knapsack_memo(items, 0, max_size)
 print "finished"
 
+# McGill - COMP 251 final 2014
+# Consider a row of n coins of values v(1) ... v(n), where n is even. We play a game against
+# an opponent by alternating turns. In each turn, a player selects either the first or last coin
+# from the remaining row, removes it from the row permanently, and adds the value of the
+# coin to his previous wins. Determine the maximum possible amount of money we can
+# definitely win if we move first.
+#
+# c) Find a recursive formula for V(i,j) from (four) other values of V(i',j') (j'–i' is odd).
+# Hint: When v(i),...,v(j) remain, only v(i) or v(j) can be selected. Notice also that we are
+# trying to maximize our win whereas the opponent is trying to minimize our win.
+#
+# d) Write both an iterative and a recursive (with memoization) algorithm to compute the
+# value V(1,n) using the results in b) and c).
+#
+# We now consider a recurrence relation where :
+#   - I maximize the total possible amount I can make --ie. maximizing my chances of winning
+#   - I consider my opponent to play the best he can
+#
+# Base case:
+#   V(i, i+1) : we are comparing two consecutive coins, the obvious answer is to take the coin with maximum value
+#   V(i, i+1) = max(v(i), v(i+1))
+# For the recurrence relation, we consider the following:
+#   - say I pick coin i, my opponent can either choose between (i+1) and (j). We know that he must play
+#     the best as he can --ie. minimizing my chances of winning. Hence, he will pick coins such that my next move
+#     has the lowest possible value.
+#     - if he picks (i+1), I can choose between (i+2) and (j) on my next round;
+#     - if he picks (j), I can choose between (i+1) and (j-1) on my next round
+#   similarly
+#  - if I pick coin j, my opponent has the choice of picking either (i) or (j-1). He must play such that he is minimizing
+#    my odds of winning, therefore minimizing the possible value I can make on my next round.
+#    - if he picks (i), I can choose between (i+1) and (j-1) on my next round;
+#    - if he picks (j-1), I can choose between (i) and (j-2)
+#
+# V(i, j) = max( v(i) + min ( V(i+2, j), V(i+1, j-1) ) ,
+#                v(j) + min ( V(i+1, j-1), V(i, j-2) ) )
 
 
 
